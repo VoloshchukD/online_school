@@ -1,0 +1,29 @@
+POST http://localhost:8080/user/auth?username=ADMIN&password=qwertyuiop123321
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/user/urs
+
+###
+
+POST http://localhost:8080/user/upd?id=1&username=Jerry&password=abc123456
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:8080/user/dlt?id=1
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/course/add
+Content-Type: application/json
+
+{
+
+"name": "englishgrammar"
+
+}
+
+###
