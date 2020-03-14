@@ -18,6 +18,7 @@ public class LessonExamination {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String questions;
     private int answer;
     private Status examResult;
 

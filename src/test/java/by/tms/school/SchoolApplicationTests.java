@@ -4,7 +4,9 @@ import by.tms.school.model.Course;
 import by.tms.school.model.Lesson;
 import by.tms.school.model.LessonExamination;
 import by.tms.school.model.User;
+import by.tms.school.service.AdminService;
 import by.tms.school.service.CourseService;
+import by.tms.school.service.LessonService;
 import by.tms.school.service.UserService;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,12 @@ class SchoolApplicationTests {
 
     @Autowired
     CourseService courseService;
+
+    @Autowired
+    LessonService lessonService;
+
+    @Autowired
+    AdminService adminService;
 
     @Test
     void reg() {
@@ -99,7 +107,7 @@ class SchoolApplicationTests {
         userService.auth("Jerry","abc123");
         userService.logout();
         userService.auth("ADMIN","qwertyuiop123321");
-        assertTrue(userService.showAllAdmin().size() == 1);
+        assertTrue(adminService.showAllAdmin().size() == 1);
     }
 
     @Test
@@ -112,7 +120,7 @@ class SchoolApplicationTests {
         userService.auth("Jerry","abc123");
         userService.logout();
         userService.auth("ADMIN","qwertyuiop123321");
-        assertEquals("deleted",userService.deleteUsersProfileAdmin(1));
+        assertEquals("deleted",adminService.deleteUsersProfileAdmin(1));
     }
 
     @Test
@@ -125,7 +133,7 @@ class SchoolApplicationTests {
         userService.auth("Jerry","abc123");
         userService.logout();
         userService.auth("ADMIN","qwertyuiop123321");
-        assertEquals("Tom",userService.updateUsersProfileAdmin(1,"Tom","123").getUsername());
+        assertEquals("Tom",adminService.updateUsersProfileAdmin(1,"Tom","123").getUsername());
     }
 
     @Test
@@ -144,9 +152,9 @@ class SchoolApplicationTests {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+                1, "",123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
-        courseService.addCourseAdmin(course);
+        adminService.addCourseAdmin(course);
         User user = new User();
         user.setPassword("abc123");
         user.setUsername("Jerry");
@@ -161,9 +169,9 @@ class SchoolApplicationTests {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+                1, "",123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
-        courseService.addCourseAdmin(course);
+        adminService.addCourseAdmin(course);
         User user = new User();
         user.setPassword("abc123");
         user.setUsername("Jerry");
@@ -178,9 +186,9 @@ class SchoolApplicationTests {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
-        courseService.addCourseAdmin(course);
+        adminService.addCourseAdmin(course);
         User user = new User();
         user.setPassword("abc123");
         user.setUsername("Jerry");
@@ -195,9 +203,9 @@ class SchoolApplicationTests {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
-        courseService.addCourseAdmin(course);
+        adminService.addCourseAdmin(course);
         User user = new User();
         user.setPassword("abc123");
         user.setUsername("Jerry");
@@ -213,9 +221,9 @@ class SchoolApplicationTests {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
-        courseService.addCourseAdmin(course);
+        adminService.addCourseAdmin(course);
         User user = new User();
         user.setPassword("abc123");
         user.setUsername("Jerry");
@@ -223,7 +231,7 @@ class SchoolApplicationTests {
         userService.reg(user);
         userService.auth("Jerry","abc123");
         courseService.enterCourse("english");
-        assertEquals("make a test to lesson №1",courseService.study("english"));
+        assertEquals("make a test to lesson №1",lessonService.study("english"));
     }
 
     @Test
@@ -231,9 +239,9 @@ class SchoolApplicationTests {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
-        courseService.addCourseAdmin(course);
+        adminService.addCourseAdmin(course);
         User user = new User();
         user.setPassword("abc123");
         user.setUsername("Jerry");
@@ -241,8 +249,8 @@ class SchoolApplicationTests {
         userService.reg(user);
         userService.auth("Jerry","abc123");
         courseService.enterCourse("english");
-        courseService.study("english");
-        assertEquals("test is DONE",courseService.passExam("english",123456));
+        lessonService.study("english");
+        assertEquals("test is DONE",lessonService.passExam("english",123456));
     }
 
     @Test
@@ -250,9 +258,9 @@ class SchoolApplicationTests {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
-        assertEquals("added",courseService.addCourseAdmin(course));
+        assertEquals("added",adminService.addCourseAdmin(course));
     }
 
 }

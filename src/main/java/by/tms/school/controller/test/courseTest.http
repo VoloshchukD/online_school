@@ -2,12 +2,16 @@ GET http://localhost:8080/course/find?name=english
 
 ###
 
-POST http://localhost:8080/course/show
+GET http://localhost:8080/course/findByCategory?categoryName=language
+
+###
+
+GET http://localhost:8080/course/showAll
 Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/course/enter?name=englishgrammar
+POST http://localhost:8080/course/enter?name=english
 Content-Type: application/json
 
 ###
@@ -17,12 +21,12 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/course/study?courseName=english
+POST http://localhost:8080/lesson/study?courseName=english
 Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/course/passExam?courseName=english&answer=123456
+POST http://localhost:8080/lesson/passExam?courseName=english&answer=123456
 Content-Type: application/json
 
 ###

@@ -1,0 +1,19 @@
+POST http://localhost:8080/user/auth?username=Editor1&password=qwerty123
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/editor/updCrsName/1?name=eng
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/editor/updLsn/1?name
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/editor/updLsEx/1?questions=aadsa&answer=12345
+Content-Type: application/json
+
+###

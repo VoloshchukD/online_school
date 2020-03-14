@@ -25,6 +25,12 @@ public class UserService {
 
     private final HttpSession httpSession;
 
+    private List<User> editors = new ArrayList<>();
+
+    public List<User> getEditors() {
+        return editors;
+    }
+
     @Autowired
     public UserService(UserRepository userRepository, HttpSession httpSession) {
         this.userRepository = userRepository;
@@ -47,12 +53,21 @@ public class UserService {
             httpSession.setAttribute("currentUser", admin);
             return "ADMIN MODE ON";
         }
+        User user = new User();
+        user.setId(1);
+        user.setUsername("Editor1");
+        user.setPassword("qwerty123");
+        editors.add(user);
+        userRepository.save(user);
         User byUsername = userRepository.findUserByUsername(username);
         if(byUsername == null) throw new UserNotFoundException();
         if(!byUsername.getPassword().equals(password)) throw new InvalidInputException();
         byUsername.setUserStatus(ONLINE);
         httpSession.setAttribute("currentUser", byUsername);
         userRepository.save(byUsername);
+        if(editors.contains(byUsername)){
+            return "you authorized as editor";
+        }
         return "you successfully authorized";
     }
 
@@ -92,39 +107,6 @@ public class UserService {
         return (User) httpSession.getAttribute("currentUser");
     }
 
-    public List<User> showAllAdmin(){
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getUsername().equals("ADMIN") && user.getId()==0
-                && user.getPassword().equals("qwertyuiop123321")){
-            return userRepository.findAll();
-        }
-        throw new NoRootsUserException();
-    }
 
-    public String deleteUsersProfileAdmin(long id){
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getUsername().equals("ADMIN") && user.getId()==0
-                && user.getPassword().equals("qwertyuiop123321")){
-            Optional<User> byId = userRepository.findById(id);
-            if(!byId.isPresent()) throw new UserNotFoundException();
-            userRepository.deleteById(id);
-            return "deleted";
-        }
-        throw new NoRootsUserException();
-    }
-
-    public User updateUsersProfileAdmin(long id, String username, String password){
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getUsername().equals("ADMIN") && user.getId()==0
-                && user.getPassword().equals("qwertyuiop123321")){
-            Optional<User> byId = userRepository.findById(id);
-            if(!byId.isPresent()) throw new UserNotFoundException();
-            byId.get().setUsername(username);
-            byId.get().setPassword(password);
-            userRepository.save(byId.get());
-            return byId.get();
-        }
-        throw new NoRootsUserException();
-    }
 
 }

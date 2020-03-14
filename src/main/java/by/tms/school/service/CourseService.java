@@ -33,13 +33,23 @@ public class CourseService {
     public Course findCourse(String name){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1,123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
-        Course course = new Course(1,"english", null, lessons);
+        List<Category> categories = new ArrayList<>();
+        categories.add(new Category("language"));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        Course course = new Course(1,"english", categories, lessons);
         courseRepository.save(course);
         Course byName = courseRepository.findByName(name);
-        if(byName.equals(null)) throw new UserNotFoundException();
+        if(byName == null) throw new UserNotFoundException();
         return byName;
     }
+
+//    public List<Course> findCoursesByCategory(String categoryName){
+//        if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
+//        Category category = new Category(categoryName);
+//        List<Course> byCategory = courseRepository.findCoursesByCategories(category);
+//        if(byCategory == null) throw new CourseNotFoundException();
+//        return byCategory;
+//    }
 
     public List<Course> showAll(){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
@@ -68,67 +78,8 @@ public class CourseService {
         return "successfully leaved";
     }
 
-    public String study(String courseName){
-        if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getCourses().contains(courseRepository.findByName(courseName))){
-            Course course = courseRepository.findByName(courseName);
-            List<Lesson> lessons = course.getLessons();
-            for(int i = 0; i < lessons.size(); i++){
-                Lesson lesson = lessons.get(i);
-                if(lesson.getLsCondition().equals(Lesson.Condition.IN_PROCESS) ||
-                        lesson.getLsCondition()==null){
-                    lesson.setLsCondition(Lesson.Condition.DONE);
-                    if(lesson.getLsExam().getExamResult().equals(LessonExamination.Status.NOT_DONE) ||
-                            lesson.getLsExam().getExamResult() == null){
-                        course.setLessons(lessons);
-                        user.getCourses().remove(course);
-                        user.getCourses().add(course);
-                        userRepository.save(user);
-                        return ("make a test to lesson №"+(i+1));
-                    }
-                    return "all is DONE";
-                }
-            }
-        }
-        throw new CourseNotFoundException();
-    }
 
-    public String passExam(String courseName, int answer){
-        if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getCourses().contains(courseRepository.findByName(courseName))){
-            Course course = courseRepository.findByName(courseName);
-            List<Lesson> lessons = course.getLessons();
-            for(int i = 0; i < lessons.size(); i++){
-                Lesson lesson = lessons.get(i);
-                if( lesson.getLsCondition().equals(Lesson.Condition.DONE) ){
-                    if(lesson.getLsExam().getExamResult().equals(LessonExamination.Status.NOT_DONE) ||
-                            lesson.getLsExam().getExamResult() == null){
-                        if(lesson.getLsExam().getAnswer() == answer){
-                            lesson.getLsExam().setExamResult(LessonExamination.Status.DONE);
-                            course.setLessons(lessons);
-                            user.getCourses().remove(course);
-                            user.getCourses().add(course);
-                            userRepository.save(user);
-                            return ("test is DONE");
-                        }
-                    }
-                    return "all is DONE";
-                }
-            }
-        }
-        throw new CourseNotFoundException();
-    }
 
-    public String addCourseAdmin(Course course){
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getUsername().equals("ADMIN") && user.getId()==0
-                && user.getPassword().equals("qwertyuiop123321")){
-            courseRepository.save(course);
-            return "added";
-        }
-        throw new NoRootsUserException();
-    }
+
 
 }
