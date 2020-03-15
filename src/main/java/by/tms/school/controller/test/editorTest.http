@@ -8,12 +8,35 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:8080/editor/updLsn/1?name
+PUT http://localhost:8080/editor/updCrsCtg/1
+Content-Type: application/json
+
+{
+
+  "name": "lang"
+
+}
+
+###
+
+PUT http://localhost:8080/editor/updLsnName/1?name=ls1
 Content-Type: application/json
 
 ###
 
-PUT http://localhost:8080/editor/updLsEx/1?questions=aadsa&answer=12345
+PUT http://localhost:8080/editor/updLsnContent/1
 Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/editor/updLsnLsExam/1
+Content-Type: application/json
+
+{
+
+  "questions": "qwe",
+  "answer": 666
+
+}
 
 ###

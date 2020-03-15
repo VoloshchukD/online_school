@@ -27,24 +27,37 @@ public class EditorController {
     }
 
     @PutMapping(path = "/updCrsName/{courseId}")
-    public ResponseEntity<String> updCourse(@PathVariable("courseId") @Min(1) long courseId,
+    public ResponseEntity<String> updCourseName(@PathVariable("courseId") @Min(1) long courseId,
                                          @RequestParam String name){
         return new ResponseEntity(editorService.editCourseName(courseId, name), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/updLsn/{lessonId}")
-    public ResponseEntity<String> updLesson(@PathVariable("lessonId") @Min(1) long lessonId,
-                                            @RequestParam String name,
-                                            @RequestBody LessonExamination lsExam, @RequestBody File content ){
-        return new ResponseEntity(editorService.
-                editLesson(lessonId,name,lsExam,content), HttpStatus.OK);
+    @PutMapping(path = "/updCrsCtg/{courseId}")
+    public ResponseEntity<String> updCourseCategories(@PathVariable("courseId") @Min(1) long courseId,
+                                            @RequestBody Category category){
+        return new ResponseEntity(editorService.addNewCourseCategory(courseId, category), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/updLsEx/{lsExamId}")
-    public ResponseEntity<String> updLsExam(@PathVariable("lsExamId") @Min(1) long lsExamId,
-                                            @RequestParam String questions,
-                                            @RequestParam int answer){
-        return new ResponseEntity(editorService.editLessonExamination(lsExamId, questions, answer), HttpStatus.OK);
+    @PutMapping(path = "/updLsnName/{lessonId}")
+    public ResponseEntity<String> updLessonName(@PathVariable("lessonId") @Min(1) long lessonId,
+                                            @RequestParam String name){
+        return new ResponseEntity(editorService.
+                editLessonName(lessonId,name), HttpStatus.OK);
     }
+
+    @PutMapping(path = "/updLsnContent/{lessonId}")
+    public ResponseEntity<String> updLessonContent(@PathVariable("lessonId") @Min(1) long lessonId,
+                                                @RequestBody File content){
+        return new ResponseEntity(editorService.
+                editLessonContent(lessonId,content), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/updLsnLsExam/{lessonId}")
+    public ResponseEntity<String> updLessonLsExam(@PathVariable("lessonId") @Min(1) long lessonId,
+                                                @RequestBody LessonExamination lessonExamination){
+        return new ResponseEntity(editorService.editLessonLsExam(lessonId, lessonExamination), HttpStatus.OK);
+    }
+
+
 
 }

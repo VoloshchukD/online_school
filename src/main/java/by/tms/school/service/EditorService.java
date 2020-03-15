@@ -49,54 +49,59 @@ public class EditorService {
         return "updated";
     }
 
-    public String addCourseCategories(long courseId, List<Category> categoryList){
+    public String addNewCourseCategory(long courseId, Category category){
         User user = (User) httpSession.getAttribute("currentUser");
         if(!userService.getEditors().contains(user)) {
             throw new NoAccessException();
         }
         Optional<Course> byId = courseRepository.findById(courseId);
         if(!byId.isPresent()) throw new CourseNotFoundException();
-        if(categoryList != null){
-            for(Category category : categoryList){
-                if(!byId.get().getCategories().contains(category))
+        if(category != null){
                     byId.get().getCategories().add(category);
-            }
         }
         courseRepository.save(byId.get());
         return "updated";
     }
 
-    public String editLesson(long lessonId, String name, LessonExamination lsExam, File content){
+    public String editLessonName(long lessonId, String name){
         User user = (User) httpSession.getAttribute("currentUser");
         if(!userService.getEditors().contains(user)) {
             throw new NoAccessException();
         }
         Optional<Lesson> byId = lessonRepository.findById(lessonId);
-//        if(!byId.isPresent()) throw new LessonNotFoundException();
         byId.get().setName(name);
-        if(lsExam != null){
-           byId.get().setLsExam(lsExam);
+        lessonRepository.save(byId.get());
+        return "updated";
+    }
+
+    public String editLessonLsExam(long lessonId, LessonExamination lsExam){
+        User user = (User) httpSession.getAttribute("currentUser");
+        if(!userService.getEditors().contains(user)) {
+            throw new NoAccessException();
         }
-        if(content != null){
-            byId.get().setContent(content);
+        Optional<Lesson> byId = lessonRepository.findById(lessonId);
+        if(lsExam != null){
+            byId.get().setLsExam(lsExam);
         }
         lessonRepository.save(byId.get());
         return "updated";
     }
 
-    public String editLessonExamination(long lessonExamId, String questions, int answer){
+    public String editLessonContent(long lessonId, File content){
         User user = (User) httpSession.getAttribute("currentUser");
         if(!userService.getEditors().contains(user)) {
             throw new NoAccessException();
         }
-        Lesson lesson = lessonRepository.findLessonByLsExam_IdContaining(lessonExamId);
-        LessonExamination lsExam = lesson.getLsExam();
-//        if(!byId.isPresent()) throw new CourseNotFoundException();
-        lsExam.setQuestions(questions);
-        lsExam.setAnswer(answer);
-        lesson.setLsExam(lsExam);
-        lessonRepository.save(lesson);
+        Optional<Lesson> byId = lessonRepository.findById(lessonId);
+        if(content != null){
+            byId.get().setContent(content);
+        } else {
+            return "no file to upd";
+        }
+        lessonRepository.save(byId.get());
         return "updated";
     }
+
+
 
 }
