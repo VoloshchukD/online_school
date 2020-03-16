@@ -1,9 +1,6 @@
 package by.tms.school;
 
-import by.tms.school.model.Course;
-import by.tms.school.model.Lesson;
-import by.tms.school.model.LessonExamination;
-import by.tms.school.model.User;
+import by.tms.school.model.*;
 import by.tms.school.service.AdminService;
 import by.tms.school.service.CourseService;
 import by.tms.school.service.LessonService;
@@ -13,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,8 +149,8 @@ class SchoolApplicationTests {
     void findAllCourses() {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1, "",123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
+                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
         adminService.addCourseAdmin(course);
         User user = new User();
@@ -168,8 +166,8 @@ class SchoolApplicationTests {
     void showAllCourses() {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1, "",123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
+                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
         adminService.addCourseAdmin(course);
         User user = new User();
@@ -185,8 +183,8 @@ class SchoolApplicationTests {
     void enterCourse() {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
+                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
         adminService.addCourseAdmin(course);
         User user = new User();
@@ -202,8 +200,8 @@ class SchoolApplicationTests {
     void leaveCourse() {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
+                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
         adminService.addCourseAdmin(course);
         User user = new User();
@@ -220,8 +218,8 @@ class SchoolApplicationTests {
     void studyCourse() {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
+                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
         adminService.addCourseAdmin(course);
         User user = new User();
@@ -238,8 +236,8 @@ class SchoolApplicationTests {
     void passExam() {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
+                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
         adminService.addCourseAdmin(course);
         User user = new User();
@@ -257,8 +255,8 @@ class SchoolApplicationTests {
     void addCourseAdmin() {
         userService.auth("ADMIN","qwertyuiop123321");
         List<Lesson> lessons = new ArrayList<>();
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(
-                1, "", 123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
+        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
+                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", null, lessons);
         assertEquals("added",adminService.addCourseAdmin(course));
     }

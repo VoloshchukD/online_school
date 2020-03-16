@@ -23,6 +23,11 @@ public class AdminController {
         this.adminService = adminService;
     }
 
+    @PostMapping(path = "/init")
+    public String initAction(){
+        return adminService.initAction();
+    }
+
     @GetMapping(path = "/urs")
     public List<User> findAll(){
         return adminService.showAllAdmin();

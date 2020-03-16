@@ -31,6 +31,10 @@ public class UserService {
         return editors;
     }
 
+    public void setEditors(List<User> editors) {
+        this.editors = editors;
+    }
+
     @Autowired
     public UserService(UserRepository userRepository, HttpSession httpSession) {
         this.userRepository = userRepository;
@@ -53,12 +57,6 @@ public class UserService {
             httpSession.setAttribute("currentUser", admin);
             return "ADMIN MODE ON";
         }
-        User user = new User();
-        user.setId(1);
-        user.setUsername("Editor1");
-        user.setPassword("qwerty123");
-        editors.add(user);
-        userRepository.save(user);
         User byUsername = userRepository.findUserByUsername(username);
         if(byUsername == null) throw new UserNotFoundException();
         if(!byUsername.getPassword().equals(password)) throw new InvalidInputException();

@@ -32,12 +32,6 @@ public class CourseService {
 
     public Course findCourse(String name){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-        List<Lesson> lessons = new ArrayList<>();
-        List<Category> categories = new ArrayList<>();
-        categories.add(new Category("language"));
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),Lesson.Condition.IN_PROCESS));
-        Course course = new Course(1,"english", categories, lessons);
-        courseRepository.save(course);
         Course byName = courseRepository.findByName(name);
         if(byName == null) throw new UserNotFoundException();
         return byName;

@@ -19,6 +19,8 @@ public class Lesson {
     private File content;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private LessonExamination lsExam;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Homework homework;
     private Condition lsCondition;
 
     public enum Condition{
