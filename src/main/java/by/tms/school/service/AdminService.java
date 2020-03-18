@@ -44,7 +44,7 @@ public class AdminService {
         List<Category> categories = new ArrayList<>();
         categories.add(new Category("language"));
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
-                new Homework(1,new File("hometask.txt"),"a","b","c", Homework.Mark.NO_MARK),Lesson.Condition.IN_PROCESS));
+                new Homework(1,new File("hometask.txt"),"a","b","c", 0),Lesson.Condition.IN_PROCESS));
         Course course = new Course(1,"english", categories, lessons);
         courseRepository.save(course);
         return "done";

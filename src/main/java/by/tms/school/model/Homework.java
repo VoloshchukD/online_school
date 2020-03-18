@@ -16,13 +16,9 @@ public class Homework {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private File task;
-    private String q1;
-    private String q2;
-    private String q3;
-    private Mark mark;
-
-    public enum Mark{
-        ONE, TWO, THREE, NO_MARK
-    }
+    private String answer1;
+    private String answer2;
+    private String answer3;
+    private int mark;
 
 }

@@ -37,4 +37,23 @@ public class HomeworkService {
         return byId.get().getTask();
     }
 
+    public String checkHometask(long id, String answer1, String answer2, String answer3){
+        Optional<Homework> byId = homeworkRepository.findById(id);
+        int mark = 0;
+        if(byId.get().getAnswer1().equals(answer1)){
+            mark++;
+            byId.get().setMark(mark);
+        }
+        if(byId.get().getAnswer2().equals(answer2)){
+            mark++;
+            byId.get().setMark(mark);
+        }
+        if(byId.get().getAnswer3().equals(answer3)){
+            mark++;
+            byId.get().setMark(mark);
+        }
+        homeworkRepository.save(byId.get());
+        return "hometask checked, your mark is " + byId.get().getMark();
+    }
+
 }
