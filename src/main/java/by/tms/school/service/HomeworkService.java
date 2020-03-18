@@ -1,6 +1,7 @@
 package by.tms.school.service;
 
 import by.tms.school.model.Homework;
+import by.tms.school.model.User;
 import by.tms.school.repository.CourseRepository;
 import by.tms.school.repository.HomeworkRepository;
 import by.tms.school.repository.LessonRepository;
@@ -39,21 +40,20 @@ public class HomeworkService {
 
     public String checkHometask(long id, String answer1, String answer2, String answer3){
         Optional<Homework> byId = homeworkRepository.findById(id);
+        User currentUser = (User) httpSession.getAttribute("currentUser");
         int mark = 0;
         if(byId.get().getAnswer1().equals(answer1)){
             mark++;
-            byId.get().setMark(mark);
         }
         if(byId.get().getAnswer2().equals(answer2)){
             mark++;
-            byId.get().setMark(mark);
         }
         if(byId.get().getAnswer3().equals(answer3)){
             mark++;
-            byId.get().setMark(mark);
         }
+//        currentUser.setPoints(currentUser.getPoints()+byId.get().getMark());
         homeworkRepository.save(byId.get());
-        return "hometask checked, your mark is " + byId.get().getMark();
+        return "hometask checked, your mark is " + mark;
     }
 
 }

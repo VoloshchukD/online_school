@@ -1,7 +1,6 @@
 package by.tms.school.service;
 
 import by.tms.school.exception.courseException.CourseNotFoundException;
-import by.tms.school.exception.userException.NoRootsUserException;
 import by.tms.school.exception.userException.NotAuthorizedUserException;
 import by.tms.school.exception.userException.UserNotFoundException;
 import by.tms.school.model.*;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +20,8 @@ public class CourseService {
     private final UserRepository userRepository;
 
     private final HttpSession httpSession;
+
+
 
     @Autowired
     public CourseService(CourseRepository courseRepository, UserRepository userRepository, HttpSession httpSession) {
@@ -37,13 +37,12 @@ public class CourseService {
         return byName;
     }
 
-//    public List<Course> findCoursesByCategory(String categoryName){
-//        if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-//        Category category = new Category(categoryName);
-//        List<Course> byCategory = courseRepository.findCoursesByCategories(category);
-//        if(byCategory == null) throw new CourseNotFoundException();
-//        return byCategory;
-//    }
+    public List<Course> findCoursesByCategory(Category category){
+        if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
+        List<Course> byCategory = courseRepository.findCoursesByCategories(category);
+        if(byCategory == null) throw new CourseNotFoundException();
+        return byCategory;
+    }
 
     public List<Course> showAll(){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();

@@ -26,6 +26,7 @@ public class Course {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Lesson> lessons;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

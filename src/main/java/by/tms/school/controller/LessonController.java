@@ -23,13 +23,13 @@ public class LessonController {
     }
 
     @PostMapping(path = "/study")
-    public ResponseEntity<String> study(@RequestParam @NotNull String courseName){
-        return new ResponseEntity(lessonService.study(courseName), HttpStatus.OK);
+    public ResponseEntity<String> study(@RequestParam @NotNull String courseName, @RequestParam int lessonNumber){
+        return new ResponseEntity(lessonService.study(courseName,lessonNumber), HttpStatus.OK);
     }
 
     @PostMapping(path = "/passExam")
-    public ResponseEntity<String> passExam(@RequestParam @NotNull String courseName, @RequestParam int answer){
-        return new ResponseEntity(lessonService.passExam(courseName, answer), HttpStatus.OK);
+    public ResponseEntity<String> passExam(@RequestParam @NotNull String courseName, @RequestParam int lessonNumber, @RequestParam int answer){
+        return new ResponseEntity(lessonService.passExam(courseName, lessonNumber, answer), HttpStatus.OK);
     }
 
 }

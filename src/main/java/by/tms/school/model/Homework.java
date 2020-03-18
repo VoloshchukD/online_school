@@ -19,6 +19,5 @@ public class Homework {
     private String answer1;
     private String answer2;
     private String answer3;
-    private int mark;
 
 }

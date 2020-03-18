@@ -28,24 +28,34 @@ public class AdminController {
         return adminService.initAction();
     }
 
-    @GetMapping(path = "/urs")
+    @GetMapping(path = "/showurs")
     public List<User> findAll(){
-        return adminService.showAllAdmin();
+        return adminService.showAllUsers();
     }
 
-    @PutMapping(path = "/upd")
+    @PutMapping(path = "/updusr")
     public User updateUser(@RequestParam @Min(1) long id, @RequestParam @NotNull String username, @RequestParam @NotNull String password){
-        return adminService.updateUsersProfileAdmin(id,username,password);
+        return adminService.updateUserProfile(id,username,password);
     }
 
-    @DeleteMapping(path = "/dlt")
+    @DeleteMapping(path = "/dltusr")
     public String deleteUser(@RequestParam @Min(1) long id){
-        return adminService.deleteUsersProfileAdmin(id);
+        return adminService.deleteUserProfile(id);
     }
 
-    @PostMapping(path = "/add")
+    @PostMapping(path = "/addcrs")
     public ResponseEntity<String> addCourseAdmin(@RequestBody @NotNull Course course){
-        return new ResponseEntity(adminService.addCourseAdmin(course), HttpStatus.OK);
+        return new ResponseEntity(adminService.addCourse(course), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/addedtr")
+    public ResponseEntity<String> addEditor(@RequestBody @NotNull User editor){
+        return new ResponseEntity(adminService.addEditor(editor), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/showedtrs")
+    public List<User> showEditors(){
+        return adminService.showAllEditors();
     }
 
 }

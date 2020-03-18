@@ -28,10 +28,10 @@ public class CourseController {
         return new ResponseEntity(courseService.findCourse(name), HttpStatus.OK);
     }
 
-//    @GetMapping(path = "/findByCategory")
-//    public ResponseEntity<List> findByCategory(@RequestParam @NotNull String categoryName){
-//        return new ResponseEntity(courseService.findCoursesByCategory(categoryName), HttpStatus.OK);
-//    }
+    @GetMapping(path = "/findByCategory")
+    public List findByCategory(@RequestBody @NotNull Category category){
+        return courseService.findCoursesByCategory(category);
+    }
 
     @GetMapping(path = "/showAll")
     public ResponseEntity<List> showAll(){

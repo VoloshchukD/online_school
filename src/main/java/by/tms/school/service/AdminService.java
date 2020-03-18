@@ -1,5 +1,6 @@
 package by.tms.school.service;
 
+import by.tms.school.exception.InvalidInputException;
 import by.tms.school.exception.userException.NoRootsUserException;
 import by.tms.school.exception.userException.UserNotFoundException;
 import by.tms.school.model.*;
@@ -42,15 +43,15 @@ public class AdminService {
         userRepository.save(user);
         List<Lesson> lessons = new ArrayList<>();
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category("language"));
-        lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",123456, LessonExamination.Status.NOT_DONE),
-                new Homework(1,new File("hometask.txt"),"a","b","c", 0),Lesson.Condition.IN_PROCESS));
+        categories.add(new Category(1,"language"));
+        lessons.add(new Lesson(1,"lesson_1",new File("lesson.txt"), new LessonExamination(1, "",123456),
+                new Homework(1,new File("hometask.txt"),"a","b","c")));
         Course course = new Course(1,"english", categories, lessons);
         courseRepository.save(course);
         return "done";
     }
 
-    public String addCourseAdmin(Course course){
+    public String addCourse(Course course){
         User user = (User) httpSession.getAttribute("currentUser");
         if(user.getUsername().equals("ADMIN") && user.getId()==0
                 && user.getPassword().equals("qwertyuiop123321")){
@@ -60,7 +61,7 @@ public class AdminService {
         throw new NoRootsUserException();
     }
 
-    public List<User> showAllAdmin(){
+    public List<User> showAllUsers(){
         User user = (User) httpSession.getAttribute("currentUser");
         if(user.getUsername().equals("ADMIN") && user.getId()==0
                 && user.getPassword().equals("qwertyuiop123321")){
@@ -69,7 +70,7 @@ public class AdminService {
         throw new NoRootsUserException();
     }
 
-    public String deleteUsersProfileAdmin(long id){
+    public String deleteUserProfile(long id){
         User user = (User) httpSession.getAttribute("currentUser");
         if(user.getUsername().equals("ADMIN") && user.getId()==0
                 && user.getPassword().equals("qwertyuiop123321")){
@@ -81,7 +82,7 @@ public class AdminService {
         throw new NoRootsUserException();
     }
 
-    public User updateUsersProfileAdmin(long id, String username, String password){
+    public User updateUserProfile(long id, String username, String password){
         User user = (User) httpSession.getAttribute("currentUser");
         if(user.getUsername().equals("ADMIN") && user.getId()==0
                 && user.getPassword().equals("qwertyuiop123321")){
@@ -91,6 +92,26 @@ public class AdminService {
             byId.get().setPassword(password);
             userRepository.save(byId.get());
             return byId.get();
+        }
+        throw new NoRootsUserException();
+    }
+
+    public String addEditor(User user){
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser.getUsername().equals("ADMIN") && currentUser.getId()==0
+                && currentUser.getPassword().equals("qwertyuiop123321")){
+           if(userService.getEditors().contains(user)) throw new InvalidInputException();
+            userService.getEditors().add(user);
+            return "added";
+        }
+        throw new NoRootsUserException();
+    }
+
+    public List showAllEditors(){
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser.getUsername().equals("ADMIN") && currentUser.getId()==0
+                && currentUser.getPassword().equals("qwertyuiop123321")){
+            return userService.getEditors();
         }
         throw new NoRootsUserException();
     }

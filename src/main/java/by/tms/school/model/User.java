@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,8 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Course> courses;
     private Status userStatus;
+    private int points;
+
 
     public enum Status{
         ONLINE, OFFLINE

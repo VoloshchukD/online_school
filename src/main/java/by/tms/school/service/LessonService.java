@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LessonService {
@@ -26,6 +29,8 @@ public class LessonService {
 
     private final HttpSession httpSession;
 
+    private Map<String, Integer> progress = new HashMap<>();
+
     @Autowired
     public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository, UserRepository userRepository, HttpSession httpSession) {
         this.lessonRepository = lessonRepository;
@@ -34,55 +39,35 @@ public class LessonService {
         this.httpSession = httpSession;
     }
 
-    public String study(String courseName){
+    public File study(String courseName, int lessonNumber){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getCourses().contains(courseRepository.findByName(courseName))){
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser.getCourses().contains(courseRepository.findByName(courseName))){
             Course course = courseRepository.findByName(courseName);
             List<Lesson> lessons = course.getLessons();
-            for(int i = 0; i < lessons.size(); i++){
-                Lesson lesson = lessons.get(i);
-                if(lesson.getLsCondition().equals(Lesson.Condition.IN_PROCESS) ||
-                        lesson.getLsCondition()==null){
-                    lesson.setLsCondition(Lesson.Condition.DONE);
-                    if(lesson.getLsExam().getExamResult().equals(LessonExamination.Status.NOT_DONE) ||
-                            lesson.getLsExam().getExamResult() == null){
-                        course.setLessons(lessons);
-                        user.getCourses().remove(course);
-                        user.getCourses().add(course);
-                        userRepository.save(user);
-                        return ("make a test to lesson №"+(i+1));
-                    }
-                    return "all is DONE";
+            Lesson lesson = lessons.get(lessonNumber);
+            if(progress.containsKey(currentUser.getId()+courseName)){
+                if(lessonNumber != progress.get(currentUser.getId()+courseName)){
+                    return null;
                 }
             }
+
+            progress.put(currentUser.getId()+courseName,lessonNumber);
+            return lesson.getContent();
         }
         throw new CourseNotFoundException();
     }
 
-    public String passExam(String courseName, int answer){
+    public String passExam(String courseName, int lessonNumber, int answer){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-        User user = (User) httpSession.getAttribute("currentUser");
-        if(user.getCourses().contains(courseRepository.findByName(courseName))){
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser.getCourses().contains(courseRepository.findByName(courseName))) {
             Course course = courseRepository.findByName(courseName);
             List<Lesson> lessons = course.getLessons();
-            for(int i = 0; i < lessons.size(); i++){
-                Lesson lesson = lessons.get(i);
-                if( lesson.getLsCondition().equals(Lesson.Condition.DONE) ){
-                    if(lesson.getLsExam().getExamResult().equals(LessonExamination.Status.NOT_DONE) ||
-                            lesson.getLsExam().getExamResult() == null){
-                        if(lesson.getLsExam().getAnswer() == answer){
-                            lesson.getLsExam().setExamResult(LessonExamination.Status.DONE);
-                            course.setLessons(lessons);
-                            user.getCourses().remove(course);
-                            user.getCourses().add(course);
-                            userRepository.save(user);
-                            return ("test is DONE");
-                        }
-                    }
-                    return "all is DONE";
-                }
-            }
+            Lesson lesson = lessons.get(lessonNumber);
+            if(lesson.getLsExam().getAnswer() == answer)
+                currentUser.setPoints(currentUser.getPoints()+5);
+                return "you passed exam";
         }
         throw new CourseNotFoundException();
     }

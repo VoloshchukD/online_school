@@ -20,10 +20,4 @@ public class LessonExamination {
     private long id;
     private String questions;
     private int answer;
-    private Status examResult;
-
-    public enum Status{
-        DONE, NOT_DONE
-    }
-
 }
