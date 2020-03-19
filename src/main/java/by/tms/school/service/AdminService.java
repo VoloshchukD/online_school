@@ -46,7 +46,7 @@ public class AdminService {
         categories.add(new Category(1,"language"));
         lessons.add(new Lesson(1,"lesson_1",new File("lesson.txt"), new LessonExamination(1, "",123456),
                 new Homework(1,new File("hometask.txt"),"a","b","c")));
-        Course course = new Course(1,"english", categories, lessons);
+        Course course = new Course(1,"english", categories, lessons,0);
         courseRepository.save(course);
         return "done";
     }

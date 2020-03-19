@@ -1,6 +1,7 @@
 package by.tms.school.service;
 
 import by.tms.school.exception.courseException.CourseNotFoundException;
+import by.tms.school.exception.lessonException.NotAllowedOrderException;
 import by.tms.school.exception.userException.NotAuthorizedUserException;
 import by.tms.school.model.Course;
 import by.tms.school.model.Lesson;
@@ -31,6 +32,14 @@ public class LessonService {
 
     private Map<String, Integer> progress = new HashMap<>();
 
+    public Map<String, Integer> getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Map<String, Integer> progress) {
+        this.progress = progress;
+    }
+
     @Autowired
     public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository, UserRepository userRepository, HttpSession httpSession) {
         this.lessonRepository = lessonRepository;
@@ -40,34 +49,43 @@ public class LessonService {
     }
 
     public File study(String courseName, int lessonNumber){
+
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
         User currentUser = (User) httpSession.getAttribute("currentUser");
+
         if(currentUser.getCourses().contains(courseRepository.findByName(courseName))){
             Course course = courseRepository.findByName(courseName);
             List<Lesson> lessons = course.getLessons();
             Lesson lesson = lessons.get(lessonNumber);
             if(progress.containsKey(currentUser.getId()+courseName)){
-                if(lessonNumber != progress.get(currentUser.getId()+courseName)){
-                    return null;
+                if(lessonNumber != (progress.get(currentUser.getId()+courseName)+1)){
+                    throw new NotAllowedOrderException();
                 }
             }
-
+            currentUser.setPoints(currentUser.getPoints()+1);
             progress.put(currentUser.getId()+courseName,lessonNumber);
+            userRepository.save(currentUser);
             return lesson.getContent();
         }
         throw new CourseNotFoundException();
     }
 
     public String passExam(String courseName, int lessonNumber, int answer){
+
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
         User currentUser = (User) httpSession.getAttribute("currentUser");
         if(currentUser.getCourses().contains(courseRepository.findByName(courseName))) {
             Course course = courseRepository.findByName(courseName);
             List<Lesson> lessons = course.getLessons();
             Lesson lesson = lessons.get(lessonNumber);
-            if(lesson.getLsExam().getAnswer() == answer)
+            if(lesson.getLsExam().getAnswer() == answer){
                 currentUser.setPoints(currentUser.getPoints()+5);
+                userRepository.save(currentUser);
                 return "you passed exam";
+            } else{
+                return "you did not pass the exam";
+            }
+
         }
         throw new CourseNotFoundException();
     }

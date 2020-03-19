@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,7 +24,6 @@ public class User {
     private Status userStatus;
     private int points;
 
-
     public enum Status{
         ONLINE, OFFLINE
     }
@@ -42,4 +42,7 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, username, password);
     }
+
+
+
 }

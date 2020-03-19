@@ -2,7 +2,6 @@ package by.tms.school.controller;
 
 import by.tms.school.model.Category;
 import by.tms.school.model.Course;
-import by.tms.school.model.User;
 import by.tms.school.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +45,16 @@ public class CourseController {
     @PostMapping(path = "/leave")
     public ResponseEntity<String> leaveCourse(@RequestParam @NotNull String name){
         return new ResponseEntity(courseService.leaveCourse(name), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/finish")
+    public ResponseEntity<String> finishCourse(@RequestParam @NotNull String name){
+        return new ResponseEntity(courseService.finishCourse(name), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/rate")
+    public ResponseEntity<String> rateCourse(@RequestParam @NotNull String name, @RequestParam int mark){
+        return new ResponseEntity(courseService.rateCourse(name, mark), HttpStatus.OK);
     }
 
 }

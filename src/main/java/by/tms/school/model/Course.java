@@ -25,7 +25,7 @@ public class Course {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL)
     private List<Lesson> lessons;
-
+    private int rating;
 
     @Override
     public boolean equals(Object o) {

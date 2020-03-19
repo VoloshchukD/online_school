@@ -51,8 +51,8 @@ public class HomeworkService {
         if(byId.get().getAnswer3().equals(answer3)){
             mark++;
         }
-//        currentUser.setPoints(currentUser.getPoints()+byId.get().getMark());
-        homeworkRepository.save(byId.get());
+        currentUser.setPoints(currentUser.getPoints()+mark);
+        userRepository.save(currentUser);
         return "hometask checked, your mark is " + mark;
     }
 

@@ -5,7 +5,6 @@ import by.tms.school.service.AdminService;
 import by.tms.school.service.CourseService;
 import by.tms.school.service.LessonService;
 import by.tms.school.service.UserService;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -153,7 +152,7 @@ class SchoolApplicationTests {
                 123456),
                 new Homework(1,new File("hometask.txt"),
                         "a","b","c")));
-        Course course = new Course(1,"english", null, lessons);
+        Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
         User user = new User();
         user.setPassword("abc123");
@@ -172,7 +171,7 @@ class SchoolApplicationTests {
                 123456),
                 new Homework(1,new File("hometask.txt"),
                         "a","b","c")));
-        Course course = new Course(1,"english", null, lessons);
+        Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
         User user = new User();
         user.setPassword("abc123");
@@ -191,7 +190,7 @@ class SchoolApplicationTests {
                 123456),
                 new Homework(1,new File("hometask.txt"),
                         "a","b","c")));
-        Course course = new Course(1,"english", null, lessons);
+        Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
         User user = new User();
         user.setPassword("abc123");
@@ -210,7 +209,7 @@ class SchoolApplicationTests {
                 123456),
                 new Homework(1,new File("hometask.txt"),
                         "a","b","c")));
-        Course course = new Course(1,"english", null, lessons);
+        Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
         User user = new User();
         user.setPassword("abc123");
@@ -230,7 +229,7 @@ class SchoolApplicationTests {
                 123456),
                 new Homework(1,new File("hometask.txt"),
                         "a","b","c")));
-        Course course = new Course(1,"english", null, lessons);
+        Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
         User user = new User();
         user.setPassword("abc123");
@@ -250,7 +249,7 @@ class SchoolApplicationTests {
                 123456),
                 new Homework(1,new File("hometask.txt"),
                         "a","b","c")));
-        Course course = new Course(1,"english", null, lessons);
+        Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
         User user = new User();
         user.setPassword("abc123");
@@ -271,7 +270,7 @@ class SchoolApplicationTests {
                 123456),
                 new Homework(1,new File("hometask.txt"),
                         "a","b","c")));
-        Course course = new Course(1,"english", null, lessons);
+        Course course = new Course(1,"english", null, lessons,0);
         assertEquals("added",adminService.addCourse(course));
     }
 
