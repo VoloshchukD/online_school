@@ -25,5 +25,9 @@ public class StatisticsController {
         return new ResponseEntity(statisticsService.getRating(), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/topursfc")
+    public ResponseEntity<User> show2(){
+        return new ResponseEntity(statisticsService.getUsersByEndedCourses(), HttpStatus.OK);
+    }
 
 }

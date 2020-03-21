@@ -2,6 +2,8 @@ package by.tms.school.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Comparator;
@@ -42,7 +44,5 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, username, password);
     }
-
-
 
 }

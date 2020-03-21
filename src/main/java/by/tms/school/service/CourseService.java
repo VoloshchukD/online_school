@@ -28,6 +28,20 @@ public class CourseService {
 
     private Map<String, List<Integer> > rating = new HashMap<>();
 
+    private Map<String, List<Course> > finishedCourses = new HashMap<>();
+
+    public Map<String, List<Integer>> getRating() {
+        return rating;
+    }
+
+    public Map<String, List<Course>> getFinishedCourses() {
+        return finishedCourses;
+    }
+
+    public void setFinishedCourses(Map<String, List<Course>> finishedCourses) {
+        this.finishedCourses = finishedCourses;
+    }
+
     @Autowired
     public CourseService(CourseRepository courseRepository, UserRepository userRepository, HttpSession httpSession, LessonService lessonService) {
         this.courseRepository = courseRepository;
@@ -70,8 +84,11 @@ public class CourseService {
         Course byName = courseRepository.findByName(name);
         if(byName == null) throw new CourseNotFoundException();
         User user = (User) httpSession.getAttribute("currentUser");
+        User user1 = (User) userRepository.findById(user.getId()).get();
         List<Course> courses = user.getCourses();
         courses.remove(byName);
+        user1.getCourses().remove(byName);
+        userRepository.save(user1);
         user.setCourses(courses);
         userRepository.save(user);
         return "successfully leaved";
@@ -82,12 +99,26 @@ public class CourseService {
         Course byName = courseRepository.findByName(courseName);
         if(byName == null) throw new CourseNotFoundException();
         User currentUser = (User) httpSession.getAttribute("currentUser");
-        List<Course> courses = currentUser.getCourses();
         Map<String, Integer> progress = lessonService.getProgress();
         if (progress.get(currentUser.getId()+courseName)+1
                 == courseRepository.findByName(courseName).getLessons().size()) {
             currentUser.setPoints(currentUser.getPoints()+10);
-            userRepository.save(currentUser);
+            User user = (User) httpSession.getAttribute("currentUser");
+            User user1 = (User) userRepository.findById(user.getId()).get();
+            List<Course> courses = user.getCourses();
+            courses.remove(byName);
+            user1.getCourses().remove(byName);
+            userRepository.save(user1);
+            user.setCourses(courses);
+            userRepository.save(user);
+            List<Course> list;
+            if(finishedCourses.containsKey(currentUser.getUsername())){
+                 list = finishedCourses.get(currentUser.getUsername());
+            } else{
+                 list = new ArrayList();
+            }
+            list.add(byName);
+            finishedCourses.put(currentUser.getUsername(),list);
             return "you finished course";
         }
         return "study all lessons first";
