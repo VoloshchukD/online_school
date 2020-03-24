@@ -44,7 +44,8 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/delete/{userId}")
-    public ResponseEntity<String> delete(@PathVariable("userId") @Min(1) long id, @RequestParam @NotNull String password){
+    public ResponseEntity<String> delete(@PathVariable("userId") @Min(1) long id,
+                                         @RequestParam @NotNull String password){
         return new ResponseEntity(userService.deleteUserProfile(id,password), HttpStatus.OK);
     }
 

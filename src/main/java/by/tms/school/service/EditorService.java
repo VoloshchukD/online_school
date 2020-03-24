@@ -1,5 +1,6 @@
 package by.tms.school.service;
 
+import by.tms.school.exception.InvalidInputException;
 import by.tms.school.exception.courseException.CourseNotFoundException;
 import by.tms.school.exception.userException.NoAccessException;
 import by.tms.school.model.*;
@@ -99,6 +100,26 @@ public class EditorService {
         }
         lessonRepository.save(byId.get());
         return "updated";
+    }
+
+    public String addLesson(Lesson lesson){
+        User user = (User) httpSession.getAttribute("currentUser");
+        if(!userService.getEditors().contains(user)) throw new NoAccessException();
+        Optional<Lesson> byId = lessonRepository.findById(lesson.getId());
+        if(byId.isPresent()) throw new InvalidInputException();
+        lessonRepository.save(lesson);
+        return "added";
+    }
+
+    public String matchLessonAndCourse(long lessonId, long courseId){
+        User user = (User) httpSession.getAttribute("currentUser");
+        if(!userService.getEditors().contains(user)) throw new NoAccessException();
+        Optional<Lesson> byIdLsn = lessonRepository.findById(lessonId);
+        Optional<Course> byIdCrs = courseRepository.findById(courseId);
+        if(byIdCrs.get().getLessons().contains(byIdLsn)) throw new InvalidInputException();
+        byIdCrs.get().getLessons().add(byIdLsn.get());
+        courseRepository.save(byIdCrs.get());
+        return "matched";
     }
 
 

@@ -20,14 +20,14 @@ public class StatisticsController {
         this.statisticsService = statisticsService;
     }
 
-    @GetMapping(path = "/topurs")
+    @GetMapping(path = "/crsbyrating")
     public ResponseEntity<User> show(){
-        return new ResponseEntity(statisticsService.getRating(), HttpStatus.OK);
+        return new ResponseEntity(statisticsService.selectCouresByRating(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/topursfc")
+    @GetMapping(path = "/ursbypoints")
     public ResponseEntity<User> show2(){
-        return new ResponseEntity(statisticsService.getUsersByEndedCourses(), HttpStatus.OK);
+        return new ResponseEntity(statisticsService.selectUsersByPoints(), HttpStatus.OK);
     }
 
 }

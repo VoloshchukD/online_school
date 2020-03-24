@@ -11,6 +11,7 @@ import java.io.File;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "lessons")
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

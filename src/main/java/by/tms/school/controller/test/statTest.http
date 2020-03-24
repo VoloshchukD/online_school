@@ -1,9 +1,9 @@
-GET http://localhost:8080/stat/topurs
+GET http://localhost:8080/stat/crsbyrating
 Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/stat/topursfc
+GET http://localhost:8080/stat/ursbypoints
 Content-Type: application/json
 
 ###

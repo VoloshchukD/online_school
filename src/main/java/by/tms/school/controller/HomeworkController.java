@@ -18,13 +18,14 @@ public class HomeworkController {
         this.homeworkService = homeworkService;
     }
 
-    @GetMapping(path = "/seeTask")
-    public ResponseEntity<User> seeTask(@RequestParam long id){
+    @GetMapping(path = "/seeTask/{id}")
+    public ResponseEntity<User> seeTask(@PathVariable("id") long id){
         return new ResponseEntity(homeworkService.seeTask(id), HttpStatus.OK);
     }
 
     @PostMapping(path = "/checkHometask/{hmtskId}")
-    public ResponseEntity<User> checkHometask(@PathVariable("hmtskId") long id, String answer1, String answer2, String answer3){
+    public ResponseEntity<User> checkHometask(@PathVariable("hmtskId") long id, @RequestParam String answer1,
+                                              @RequestParam String answer2, @RequestParam String answer3){
         return new ResponseEntity(homeworkService.checkHometask(id, answer1, answer2, answer3), HttpStatus.OK);
     }
 

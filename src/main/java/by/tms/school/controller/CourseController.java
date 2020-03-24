@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class CourseController {
     }
 
     @PostMapping(path = "/rate")
-    public ResponseEntity<String> rateCourse(@RequestParam @NotNull String name, @RequestParam int mark){
+    public ResponseEntity<String> rateCourse(@RequestParam @NotNull String name, @RequestParam @Min(1) @Max(5) int mark){
         return new ResponseEntity(courseService.rateCourse(name, mark), HttpStatus.OK);
     }
 

@@ -104,6 +104,4 @@ public class UserService {
         return (User) httpSession.getAttribute("currentUser");
     }
 
-
-
 }

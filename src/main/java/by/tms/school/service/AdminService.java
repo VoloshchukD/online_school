@@ -83,7 +83,7 @@ public class AdminService {
                 && currentUser.getPassword().equals("qwertyuiop123321")){
            if(!userRepository.findById(id).isPresent()) throw new InvalidInputException();
            userService.getEditors().add(userRepository.findById(id).get());
-           return "added";
+            return "added";
         }
         throw new NoRootsUserException();
     }

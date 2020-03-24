@@ -1,6 +1,7 @@
 package by.tms.school.controller;
 
 import by.tms.school.model.Category;
+import by.tms.school.model.Lesson;
 import by.tms.school.model.LessonExamination;
 import by.tms.school.service.EditorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 
 @RestController
@@ -56,6 +58,14 @@ public class EditorController {
         return new ResponseEntity(editorService.editLessonLsExam(lessonId, lessonExamination), HttpStatus.OK);
     }
 
+    @PostMapping(path = "/addLsn")
+    public ResponseEntity<String> updLessonLsExam(@RequestBody @NotNull Lesson lesson){
+        return new ResponseEntity(editorService.addLesson(lesson), HttpStatus.OK);
+    }
 
+    @PostMapping(path = "/matchLsn&Crs")
+    public ResponseEntity<String> updLessonLsExam( @RequestParam long idlsn, @RequestParam long idcrs){
+        return new ResponseEntity(editorService.matchLessonAndCourse(idlsn, idcrs), HttpStatus.OK);
+    }
 
 }

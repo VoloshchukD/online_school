@@ -27,6 +27,13 @@ Content-Type: application/json
 PUT http://localhost:8080/editor/updLsnContent/1
 Content-Type: application/json
 
+{
+
+  "questions": "qwe",
+  "answer": 666
+
+}
+
 ###
 
 PUT http://localhost:8080/editor/updLsnLsExam/1
@@ -34,9 +41,26 @@ Content-Type: application/json
 
 {
 
-  "questions": "qwe",
+  "content": "file.txt"
+
+
+}
+
+###
+
+POST http://localhost:8080/editor/addLsn
+Content-Type: application/json
+
+{
+
+  "name": "qwe",
   "answer": 666
 
 }
+
+###
+
+POST http://localhost:8080/editor/matchLsn&Crs?idlsn=1&idcrs=1
+Content-Type: application/json
 
 ###

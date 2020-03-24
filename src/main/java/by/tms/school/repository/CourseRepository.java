@@ -13,4 +13,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findCoursesByCategories(Category category);
 
+    @Query(value = "select c from Course c order by c.rating desc")
+    List<Course> selectCoursesByRating();
+
+
 }

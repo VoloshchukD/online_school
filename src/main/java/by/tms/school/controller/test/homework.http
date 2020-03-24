@@ -1,4 +1,4 @@
-GET http://localhost:8080/homework/seeTask?id=1
+GET http://localhost:8080/homework/seeTask/1
 Content-Type: application/json
 
 ###

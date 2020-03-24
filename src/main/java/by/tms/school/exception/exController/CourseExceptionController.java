@@ -2,6 +2,7 @@ package by.tms.school.exception.exController;
 
 import by.tms.school.exception.courseException.CourseNotFoundException;
 import by.tms.school.exception.userException.UserDoNotExistsException;
+import org.hibernate.validator.internal.constraintvalidators.bv.NotNullValidator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

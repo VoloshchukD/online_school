@@ -28,7 +28,8 @@ public class LessonController {
     }
 
     @PostMapping(path = "/passExam")
-    public ResponseEntity<String> passExam(@RequestParam @NotNull String courseName, @RequestParam int lessonNumber, @RequestParam int answer){
+    public ResponseEntity<String> passExam(@RequestParam @NotNull String courseName, @RequestParam int lessonNumber,
+                                           @RequestParam int answer){
         return new ResponseEntity(lessonService.passExam(courseName, lessonNumber, answer), HttpStatus.OK);
     }
 
