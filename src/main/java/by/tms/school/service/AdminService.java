@@ -32,25 +32,6 @@ public class AdminService {
         this.httpSession = httpSession;
     }
 
-    public String initAction(){
-        User user = new User();
-        user.setId(1);
-        user.setUsername("Editor1");
-        user.setPassword("qwerty123");
-        List<User> editors = new ArrayList<>();
-        editors.add(user);
-        userService.setEditors(editors);
-        userRepository.save(user);
-        List<Lesson> lessons = new ArrayList<>();
-        List<Category> categories = new ArrayList<>();
-        categories.add(new Category(1,"language"));
-        lessons.add(new Lesson(1,"lesson_1",new File("lesson.txt"), new LessonExamination(1, "",123456),
-                new Homework(1,new File("hometask.txt"),"a","b","c")));
-        Course course = new Course(1,"english", categories, lessons,0);
-        courseRepository.save(course);
-        return "done";
-    }
-
     public String addCourse(Course course){
         User user = (User) httpSession.getAttribute("currentUser");
         if(user.getUsername().equals("ADMIN") && user.getId()==0
@@ -96,13 +77,13 @@ public class AdminService {
         throw new NoRootsUserException();
     }
 
-    public String addEditor(User user){
+    public String makeUserAnEditor(long id){
         User currentUser = (User) httpSession.getAttribute("currentUser");
         if(currentUser.getUsername().equals("ADMIN") && currentUser.getId()==0
                 && currentUser.getPassword().equals("qwertyuiop123321")){
-           if(userService.getEditors().contains(user)) throw new InvalidInputException();
-            userService.getEditors().add(user);
-            return "added";
+           if(!userRepository.findById(id).isPresent()) throw new InvalidInputException();
+           userService.getEditors().add(userRepository.findById(id).get());
+           return "added";
         }
         throw new NoRootsUserException();
     }

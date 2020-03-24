@@ -5,6 +5,8 @@ import by.tms.school.model.User;
 import by.tms.school.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +23,6 @@ public class AdminController {
 
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
-    }
-
-    @PostMapping(path = "/init")
-    public String initAction(){
-        return adminService.initAction();
     }
 
     @GetMapping(path = "/showurs")
@@ -49,8 +46,8 @@ public class AdminController {
     }
 
     @PostMapping(path = "/addedtr")
-    public ResponseEntity<String> addEditor(@RequestBody @NotNull User editor){
-        return new ResponseEntity(adminService.addEditor(editor), HttpStatus.OK);
+    public ResponseEntity<String> addEditor(@RequestParam long id){
+        return new ResponseEntity(adminService.makeUserAnEditor(id), HttpStatus.OK);
     }
 
     @GetMapping(path = "/showedtrs")

@@ -3,16 +3,11 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/admin/init
-Content-Type: application/json
-
-###
-
 GET http://localhost:8080/admin/showurs
 
 ###
 
-PUT http://localhost:8080/admin/updusr?id=1&username=Jerry&password=abc123456
+PUT http://localhost:8080/admin/updusr?id=0&username=Jerry&password=abc123456
 Content-Type: application/json
 
 ###
@@ -33,16 +28,8 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/admin/addedtr
+POST http://localhost:8080/admin/addedtr?id=1
 Content-Type: application/json
-
-{
-
-"username": "Tommy",
-  "age": "43",
-  "password": "editor2"
-
-}
 
 ###
 
