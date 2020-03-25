@@ -150,7 +150,7 @@ class SchoolApplicationTests {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",
                 123456),
-                new Homework(1,new File("hometask.txt"),
+                new Homework(1,"qwe",
                         "a","b","c")));
         Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
@@ -169,7 +169,7 @@ class SchoolApplicationTests {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",
                 123456),
-                new Homework(1,new File("hometask.txt"),
+                new Homework(1,"qwe",
                         "a","b","c")));
         Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
@@ -188,7 +188,7 @@ class SchoolApplicationTests {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",
                 123456),
-                new Homework(1,new File("hometask.txt"),
+                new Homework(1,"qwe",
                         "a","b","c")));
         Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
@@ -207,7 +207,7 @@ class SchoolApplicationTests {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",
                 123456),
-                new Homework(1,new File("hometask.txt"),
+                new Homework(1,"qwe",
                         "a","b","c")));
         Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
@@ -227,7 +227,7 @@ class SchoolApplicationTests {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",
                 123456),
-                new Homework(1,new File("hometask.txt"),
+                new Homework(1,"qwe",
                         "a","b","c")));
         Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
@@ -247,7 +247,7 @@ class SchoolApplicationTests {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",
                 123456),
-                new Homework(1,new File("hometask.txt"),
+                new Homework(1,"qwe",
                         "a","b","c")));
         Course course = new Course(1,"english", null, lessons,0);
         adminService.addCourse(course);
@@ -268,7 +268,7 @@ class SchoolApplicationTests {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(new Lesson(1,"lesson_1",null, new LessonExamination(1, "",
                 123456),
-                new Homework(1,new File("hometask.txt"),
+                new Homework(1,"qwe",
                         "a","b","c")));
         Course course = new Course(1,"english", null, lessons,0);
         assertEquals("added",adminService.addCourse(course));

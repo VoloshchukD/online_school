@@ -1,5 +1,6 @@
 package by.tms.school.service;
 
+import by.tms.school.exception.InvalidInputException;
 import by.tms.school.model.Homework;
 import by.tms.school.model.User;
 import by.tms.school.repository.CourseRepository;
@@ -33,9 +34,10 @@ public class HomeworkService {
         this.httpSession = httpSession;
     }
 
-    public File seeTask(long id){
-        Optional<Homework> byId = homeworkRepository.findById(id);
-        return byId.get().getTask();
+    public String seeTask(long id){
+        if(!homeworkRepository.findById(id).isPresent()) throw new InvalidInputException();
+        String byId = homeworkRepository.findById(id).get().getTask();
+        return byId;
     }
 
     public String checkHometask(long id, String answer1, String answer2, String answer3){

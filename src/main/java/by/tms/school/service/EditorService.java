@@ -87,14 +87,14 @@ public class EditorService {
         return "updated";
     }
 
-    public String editLessonContent(long lessonId, File content){
+    public String editLessonContent(long lessonId, String contentFileName){
         User user = (User) httpSession.getAttribute("currentUser");
         if(!userService.getEditors().contains(user)) {
             throw new NoAccessException();
         }
         Optional<Lesson> byId = lessonRepository.findById(lessonId);
-        if(content != null){
-            byId.get().setContent(content);
+        if(contentFileName != null){
+            byId.get().setContent(new File(contentFileName));
         } else {
             return "no file to upd";
         }
@@ -111,6 +111,26 @@ public class EditorService {
         return "added";
     }
 
+    public String addLessonExaminationToLesson(long lsnId, LessonExamination lessonExamination){
+        User user = (User) httpSession.getAttribute("currentUser");
+        if(!userService.getEditors().contains(user)) throw new NoAccessException();
+        Optional<Lesson> byId = lessonRepository.findById(lsnId);
+        if(!byId.isPresent()) throw new InvalidInputException();
+        byId.get().setLsExam(lessonExamination);
+        lessonRepository.save(byId.get());
+        return "ls exm added to lesson";
+    }
+
+    public String addHomeworkToLesson(long lsnId, Homework homework){
+        User user = (User) httpSession.getAttribute("currentUser");
+        if(!userService.getEditors().contains(user)) throw new NoAccessException();
+        Optional<Lesson> byId = lessonRepository.findById(lsnId);
+        if(!byId.isPresent()) throw new InvalidInputException();
+        byId.get().setHomework(homework);
+        lessonRepository.save(byId.get());
+        return "homework added to lesson";
+    }
+
     public String matchLessonAndCourse(long lessonId, long courseId){
         User user = (User) httpSession.getAttribute("currentUser");
         if(!userService.getEditors().contains(user)) throw new NoAccessException();
@@ -121,7 +141,5 @@ public class EditorService {
         courseRepository.save(byIdCrs.get());
         return "matched";
     }
-
-
 
 }

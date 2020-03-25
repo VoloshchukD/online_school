@@ -1,6 +1,7 @@
 package by.tms.school.controller;
 
 import by.tms.school.model.Category;
+import by.tms.school.model.Homework;
 import by.tms.school.model.Lesson;
 import by.tms.school.model.LessonExamination;
 import by.tms.school.service.EditorService;
@@ -47,15 +48,29 @@ public class EditorController {
 
     @PutMapping(path = "/updLsnContent/{lessonId}")
     public ResponseEntity<String> updLessonContent(@PathVariable("lessonId") @Min(1) long lessonId,
-                                                @RequestBody File content){
+                                                @RequestParam String contentFileName){
         return new ResponseEntity(editorService.
-                editLessonContent(lessonId,content), HttpStatus.OK);
+                editLessonContent(lessonId,contentFileName), HttpStatus.OK);
     }
 
     @PutMapping(path = "/updLsnLsExam/{lessonId}")
     public ResponseEntity<String> updLessonLsExam(@PathVariable("lessonId") @Min(1) long lessonId,
                                                 @RequestBody LessonExamination lessonExamination){
         return new ResponseEntity(editorService.editLessonLsExam(lessonId, lessonExamination), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/addlsnexm/{lessonId}")
+    public ResponseEntity<String> addLessonExam(@PathVariable("lessonId") @Min(1) long lessonId,
+                                                   @RequestBody LessonExamination lessonExamination){
+        return new ResponseEntity(editorService.addLessonExaminationToLesson(lessonId, lessonExamination)
+                , HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/addlsnhmwrk/{lessonId}")
+    public ResponseEntity<String> addLessonHomework(@PathVariable("lessonId") @Min(1) long lessonId,
+                                                    @RequestBody Homework homework){
+        return new ResponseEntity(editorService.addHomeworkToLesson(lessonId, homework)
+                , HttpStatus.OK);
     }
 
     @PostMapping(path = "/addLsn")

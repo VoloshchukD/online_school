@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/lesson/passExam?courseName=english&lessonNumber=1&answer=123456
+POST http://localhost:8080/lesson/passExam?courseName=english&lessonNumber=0&answer=123
 Content-Type: application/json
 
 ###
