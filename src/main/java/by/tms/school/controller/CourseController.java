@@ -50,8 +50,8 @@ public class CourseController {
     }
 
     @PostMapping(path = "/finish")
-    public ResponseEntity<String> finishCourse(@RequestParam @NotNull String name){
-        return new ResponseEntity(courseService.finishCourse(name), HttpStatus.OK);
+    public ResponseEntity<String> finishCourse(@RequestParam @NotNull long id){
+        return new ResponseEntity(courseService.finishCourse(id), HttpStatus.OK);
     }
 
     @PostMapping(path = "/rate")

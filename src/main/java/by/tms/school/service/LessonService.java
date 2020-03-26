@@ -5,7 +5,6 @@ import by.tms.school.exception.lessonException.NotAllowedOrderException;
 import by.tms.school.exception.userException.NotAuthorizedUserException;
 import by.tms.school.model.Course;
 import by.tms.school.model.Lesson;
-import by.tms.school.model.LessonExamination;
 import by.tms.school.model.User;
 import by.tms.school.repository.CourseRepository;
 import by.tms.school.repository.LessonRepository;
@@ -30,14 +29,24 @@ public class LessonService {
 
     private final HttpSession httpSession;
 
-    private Map<String, Integer> progress = new HashMap<>();
+    private Map<String, Integer> progressLesson = new HashMap<>();
 
-    public Map<String, Integer> getProgress() {
-        return progress;
+    private Map<String, Integer> progressExam = new HashMap<>();
+
+    public Map<String, Integer> getProgressLesson() {
+        return progressLesson;
     }
 
-    public void setProgress(Map<String, Integer> progress) {
-        this.progress = progress;
+    public Map<String, Integer> getProgressLsExam() {
+        return progressExam;
+    }
+
+    public void setProgressLesson(Map<String, Integer> progressLesson) {
+        this.progressLesson = progressLesson;
+    }
+
+    public void setProgressExam(Map<String, Integer> progressExam) {
+        this.progressExam = progressExam;
     }
 
     @Autowired
@@ -49,21 +58,19 @@ public class LessonService {
     }
 
     public File study(String courseName, int lessonNumber){
-
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
         User currentUser = (User) httpSession.getAttribute("currentUser");
-
         if(currentUser.getCourses().contains(courseRepository.findByName(courseName))){
             Course course = courseRepository.findByName(courseName);
             List<Lesson> lessons = course.getLessons();
             Lesson lesson = lessons.get(lessonNumber);
-            if(progress.containsKey(currentUser.getId()+courseName)){
-                if(lessonNumber != (progress.get(currentUser.getId()+courseName)+1)){
+            if(progressLesson.containsKey(currentUser.getId()+courseName)){
+                if(lessonNumber != (progressLesson.get(currentUser.getId()+courseName)+1)){
                     throw new NotAllowedOrderException();
                 }
             }
             currentUser.setPoints(currentUser.getPoints()+1);
-            progress.put(currentUser.getId()+courseName,lessonNumber);
+            progressLesson.put(currentUser.getId()+courseName,lessonNumber);
             userRepository.save(currentUser);
             return lesson.getContent();
         }
@@ -71,21 +78,37 @@ public class LessonService {
     }
 
     public String passExam(String courseName, int lessonNumber, int answer){
-
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
         User currentUser = (User) httpSession.getAttribute("currentUser");
         if(currentUser.getCourses().contains(courseRepository.findByName(courseName))) {
             Course course = courseRepository.findByName(courseName);
             List<Lesson> lessons = course.getLessons();
             Lesson lesson = lessons.get(lessonNumber);
-            if(lesson.getLsExam().getAnswer() == answer){
-                currentUser.setPoints(currentUser.getPoints()+5);
-                userRepository.save(currentUser);
-                return "you passed exam";
+            if(progressLesson.get(currentUser.getId()+courseName) == lessonNumber){
+                if(lesson.getLsExam().getAnswer() == answer){
+                    currentUser.setPoints(currentUser.getPoints()+5);
+                    userRepository.save(currentUser);
+                    progressExam.put(currentUser.getId()+courseName,lessonNumber);
+                    return "you passed exam";
+                } else {
+                    return "you did not pass the exam";
+                }
             } else{
-                return "you did not pass the exam";
+                return "lesson is not done";
             }
+        }
+        throw new CourseNotFoundException();
+    }
 
+    public String showCourseProgress(String courseName){
+        if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
+        User currentUser = (User) httpSession.getAttribute("currentUser");
+        if(currentUser.getCourses().contains(courseRepository.findByName(courseName))) {
+            Course course = courseRepository.findByName(courseName);
+            int lsProgress = progressLesson.get(currentUser.getId()+courseName)+1;
+            int ExamProgress = progressExam.get(currentUser.getId()+courseName)+1;
+
+            return lsProgress+" lsn passed \n"+ExamProgress+" exm done";
         }
         throw new CourseNotFoundException();
     }

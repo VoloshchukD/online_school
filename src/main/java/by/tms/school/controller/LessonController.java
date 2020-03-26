@@ -4,10 +4,7 @@ import by.tms.school.service.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -31,6 +28,11 @@ public class LessonController {
     public ResponseEntity<String> passExam(@RequestParam @NotNull String courseName, @RequestParam int lessonNumber,
                                            @RequestParam int answer){
         return new ResponseEntity(lessonService.passExam(courseName, lessonNumber, answer), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/showProgress")
+    public ResponseEntity<String> showProgress(@RequestParam @NotNull String courseName){
+        return new ResponseEntity(lessonService.showCourseProgress(courseName), HttpStatus.OK);
     }
 
 }

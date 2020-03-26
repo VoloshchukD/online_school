@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CourseService {
@@ -94,32 +91,42 @@ public class CourseService {
         return "successfully leaved";
     }
 
-    public String finishCourse(String courseName){
+    public String finishCourse(long id){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-        Course byName = courseRepository.findByName(courseName);
-        if(byName == null) throw new CourseNotFoundException();
+        Optional<Course> byId = courseRepository.findById(id);
+        if(!byId.isPresent()) throw new CourseNotFoundException();
         User currentUser = (User) httpSession.getAttribute("currentUser");
-        Map<String, Integer> progress = lessonService.getProgress();
-        if (progress.get(currentUser.getId()+courseName)+1
-                == courseRepository.findByName(courseName).getLessons().size()) {
-            currentUser.setPoints(currentUser.getPoints()+10);
-            User user = (User) httpSession.getAttribute("currentUser");
-            User user1 = (User) userRepository.findById(user.getId()).get();
-            List<Course> courses = user.getCourses();
-            courses.remove(byName);
-            user1.getCourses().remove(byName);
-            userRepository.save(user1);
-            user.setCourses(courses);
-            userRepository.save(user);
-            List<Course> list;
-            if(finishedCourses.containsKey(currentUser.getUsername())){
-                 list = finishedCourses.get(currentUser.getUsername());
-            } else{
-                 list = new ArrayList();
+        Map<String, Integer> progressLesson = lessonService.getProgressLesson();
+        Map<String, Integer> progressExam = lessonService.getProgressLsExam();
+        if (progressLesson.get(currentUser.getId()+byId.get().getName())+1
+                == courseRepository.findById(id).get().getLessons().size()) {
+            if (progressExam.get(currentUser.getId()+byId.get().getName())+1
+                    == courseRepository.findById(id).get().getLessons().size()) {
+                currentUser.setPoints(currentUser.getPoints()+10);
+                User user1 = userRepository.findById(currentUser.getId()).get();
+                List<Course> coursesUser = currentUser.getCourses();
+                List<Course> coursesToSet = currentUser.getCourses();
+                for(Course course1 : coursesUser){
+                    if(course1.getId() == id) continue;
+                    coursesToSet.add(course1);
+                }
+//                user1.getCourses().remove(byId.get());
+//                userRepository.save(user1);
+                currentUser.setCourses(coursesToSet);
+                user1.setCourses(coursesToSet);
+                userRepository.save(user1);
+                userRepository.save(currentUser);
+                List<Course> list;
+                if(finishedCourses.containsKey(currentUser.getUsername())){
+                     list = finishedCourses.get(currentUser.getUsername());
+                } else{
+                     list = new ArrayList();
             }
-            list.add(byName);
+            list.add(byId.get());
             finishedCourses.put(currentUser.getUsername(),list);
             return "you finished course";
+            }
+            return "pass all exams first";
         }
         return "study all lessons first";
     }
