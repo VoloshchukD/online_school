@@ -54,10 +54,17 @@ public class CourseService {
         return byName;
     }
 
-    public List<Course> findCoursesByCategory(Category category){
+    public List<Course> findCoursesByCategoryName(Category category){
         if(httpSession.getAttribute("currentUser")==null) throw new NotAuthorizedUserException();
-        List<Course> byCategory = courseRepository.findCoursesByCategories(category);
-        if(byCategory == null) throw new CourseNotFoundException();
+        List<Course> byCategory = new ArrayList<>();
+        List<Course> all = courseRepository.findAll();
+       for(Course course1 : all){
+           for(Category category1 : course1.getCategories()){
+               if(category1.getName().equals(category.getName())){
+                   byCategory.add(course1);
+               }
+           }
+       }
         return byCategory;
     }
 
@@ -103,19 +110,16 @@ public class CourseService {
             if (progressExam.get(currentUser.getId()+byId.get().getName())+1
                     == courseRepository.findById(id).get().getLessons().size()) {
                 currentUser.setPoints(currentUser.getPoints()+10);
-                User user1 = userRepository.findById(currentUser.getId()).get();
-                List<Course> coursesUser = currentUser.getCourses();
-                List<Course> coursesToSet = currentUser.getCourses();
-                for(Course course1 : coursesUser){
-                    if(course1.getId() == id) continue;
-                    coursesToSet.add(course1);
-                }
-//                user1.getCourses().remove(byId.get());
-//                userRepository.save(user1);
-                currentUser.setCourses(coursesToSet);
-                user1.setCourses(coursesToSet);
+
+                User user = (User) httpSession.getAttribute("currentUser");
+                User user1 = (User) userRepository.findById(user.getId()).get();
+                List<Course> courses = user.getCourses();
+                courses.remove(byId.get());
+                user1.getCourses().remove(byId.get());
                 userRepository.save(user1);
-                userRepository.save(currentUser);
+                user.setCourses(courses);
+                userRepository.save(user);
+
                 List<Course> list;
                 if(finishedCourses.containsKey(currentUser.getUsername())){
                      list = finishedCourses.get(currentUser.getUsername());

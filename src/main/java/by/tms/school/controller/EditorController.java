@@ -33,10 +33,10 @@ public class EditorController {
         return new ResponseEntity(editorService.editCourseName(courseId, name), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/updCrsCtg/{courseId}")
-    public ResponseEntity<String> updCourseCategories(@PathVariable("courseId") @Min(1) long courseId,
-                                            @RequestBody Category category){
-        return new ResponseEntity(editorService.addNewCourseCategory(courseId, category), HttpStatus.OK);
+    @PostMapping(path = "/matchCrs&Ctg/{courseId}")
+    public ResponseEntity<String> matchCrsCtg(@PathVariable("courseId") @Min(1) long courseId,
+                                            @RequestParam long categoryId){
+        return new ResponseEntity(editorService.matchCourseAndCategory(courseId, categoryId), HttpStatus.OK);
     }
 
     @PutMapping(path = "/updLsnName/{lessonId}")

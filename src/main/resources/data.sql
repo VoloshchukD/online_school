@@ -6,4 +6,7 @@ INSERT INTO courses (name, rating) VALUES
   ('grammar', 0);
 INSERT INTO lessons (name) VALUES
   ('lesson1');
-
+INSERT INTO categories (name) VALUES
+  ('eng'),
+  ('beginner'),
+  ('lang');

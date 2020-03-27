@@ -30,8 +30,8 @@ public class CourseController {
     }
 
     @GetMapping(path = "/findByCategory")
-    public List findByCategory(@RequestBody @NotNull Category category){
-        return courseService.findCoursesByCategory(category);
+    public List<Course> findByCategory(@RequestBody @NotNull Category category){
+        return courseService.findCoursesByCategoryName(category);
     }
 
     @GetMapping(path = "/showAll")

@@ -2,6 +2,7 @@ package by.tms.school.service;
 
 import by.tms.school.exception.InvalidInputException;
 import by.tms.school.exception.userException.NotAuthorizedUserException;
+import by.tms.school.exception.userException.UserAlreadyExistsException;
 import by.tms.school.exception.userException.UserNotFoundException;
 import by.tms.school.model.User;
 import by.tms.school.repository.UserRepository;
@@ -41,7 +42,8 @@ public class UserService {
     }
 
     public String reg(User user){
-        if(userRepository.existsById(user.getId())) throw new UserDoNotExistsException();
+        if(userRepository.findUserByUsername(user.getUsername()) != null) throw new UserAlreadyExistsException();
+        if(userRepository.existsById(user.getId())) throw new UserAlreadyExistsException();
         user.setCourses(new ArrayList<>());
         userRepository.save(user);
         return "you successfully reged";

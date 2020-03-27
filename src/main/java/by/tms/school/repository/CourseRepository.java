@@ -11,7 +11,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     Course findByName(String name);
 
-    List<Course> findCoursesByCategories(Category category);
+    @Query(value = "select c from Category c")
+    List<Category> selectAllCategories();
 
     @Query(value = "select c from Course c order by c.rating desc")
     List<Course> selectCoursesByRating();

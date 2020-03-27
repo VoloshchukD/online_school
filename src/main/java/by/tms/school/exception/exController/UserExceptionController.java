@@ -1,10 +1,7 @@
 package by.tms.school.exception.exController;
 
 import by.tms.school.exception.InvalidInputException;
-import by.tms.school.exception.userException.NoRootsUserException;
-import by.tms.school.exception.userException.NotAuthorizedUserException;
-import by.tms.school.exception.userException.UserDoNotExistsException;
-import by.tms.school.exception.userException.UserNotFoundException;
+import by.tms.school.exception.userException.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +22,17 @@ public class UserExceptionController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserDoNotExistsException.class)
     public ResponseEntity<String> notExist() {
+        return new ResponseEntity("user does not exist", HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<String> exist() {
         return new ResponseEntity("user already exists", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> notFound() {
-        return new ResponseEntity("user do not exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity("user not found", HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidInputException.class)

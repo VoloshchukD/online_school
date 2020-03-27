@@ -71,7 +71,6 @@ public class LessonService {
             }
             currentUser.setPoints(currentUser.getPoints()+1);
             progressLesson.put(currentUser.getId()+courseName,lessonNumber);
-            userRepository.save(currentUser);
             return lesson.getContent();
         }
         throw new CourseNotFoundException();
@@ -87,7 +86,6 @@ public class LessonService {
             if(progressLesson.get(currentUser.getId()+courseName) == lessonNumber){
                 if(lesson.getLsExam().getAnswer() == answer){
                     currentUser.setPoints(currentUser.getPoints()+5);
-                    userRepository.save(currentUser);
                     progressExam.put(currentUser.getId()+courseName,lessonNumber);
                     return "you passed exam";
                 } else {

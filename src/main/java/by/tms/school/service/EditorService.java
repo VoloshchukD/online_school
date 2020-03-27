@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,15 +51,16 @@ public class EditorService {
         return "updated";
     }
 
-    public String addNewCourseCategory(long courseId, Category category){
+    public String matchCourseAndCategory(long courseId, long categoryId){
         User user = (User) httpSession.getAttribute("currentUser");
         if(!userService.getEditors().contains(user)) {
             throw new NoAccessException();
         }
         Optional<Course> byId = courseRepository.findById(courseId);
         if(!byId.isPresent()) throw new CourseNotFoundException();
-        if(category != null){
-                    byId.get().getCategories().add(category);
+        List<Category> categories = courseRepository.selectAllCategories();
+        for(Category category1 : categories){
+            if(category1.getId() == categoryId) byId.get().getCategories().add(category1);
         }
         courseRepository.save(byId.get());
         return "updated";

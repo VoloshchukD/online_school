@@ -8,14 +8,8 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:8080/editor/updCrsCtg/1
+POST http://localhost:8080/editor/matchCrs&Ctg/1?categoryId=1
 Content-Type: application/json
-
-{
-
-  "name": "lang"
-
-}
 
 ###
 

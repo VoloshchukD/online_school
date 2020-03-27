@@ -3,7 +3,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/homework/checkHometask/1?answer1=a&answer2=b&answer3=c
+POST http://localhost:8080/homework/checkHometask/1?answer1=a&answer2=a&answer3=c
 Content-Type: application/json
 
 ###

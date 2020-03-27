@@ -54,7 +54,6 @@ public class HomeworkService {
             mark++;
         }
         currentUser.setPoints(currentUser.getPoints()+mark);
-        userRepository.save(currentUser);
         return "hometask checked, your mark is " + mark;
     }
 
