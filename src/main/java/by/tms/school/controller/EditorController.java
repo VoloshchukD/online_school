@@ -29,46 +29,46 @@ public class EditorController {
 
     @PutMapping(path = "/updCrsName/{courseId}")
     public ResponseEntity<String> updCourseName(@PathVariable("courseId") @Min(1) long courseId,
-                                         @RequestParam String name){
+                                         @RequestParam @NotNull String name){
         return new ResponseEntity(editorService.editCourseName(courseId, name), HttpStatus.OK);
     }
 
     @PostMapping(path = "/matchCrs&Ctg/{courseId}")
     public ResponseEntity<String> matchCrsCtg(@PathVariable("courseId") @Min(1) long courseId,
-                                            @RequestParam long categoryId){
+                                            @RequestParam @Min(1) long categoryId){
         return new ResponseEntity(editorService.matchCourseAndCategory(courseId, categoryId), HttpStatus.OK);
     }
 
     @PutMapping(path = "/updLsnName/{lessonId}")
     public ResponseEntity<String> updLessonName(@PathVariable("lessonId") @Min(1) long lessonId,
-                                            @RequestParam String name){
+                                            @RequestParam @NotNull String name){
         return new ResponseEntity(editorService.
                 editLessonName(lessonId,name), HttpStatus.OK);
     }
 
     @PutMapping(path = "/updLsnContent/{lessonId}")
     public ResponseEntity<String> updLessonContent(@PathVariable("lessonId") @Min(1) long lessonId,
-                                                @RequestParam String contentFileName){
+                                                @RequestParam @NotNull String contentFileName){
         return new ResponseEntity(editorService.
                 editLessonContent(lessonId,contentFileName), HttpStatus.OK);
     }
 
     @PutMapping(path = "/updLsnLsExam/{lessonId}")
     public ResponseEntity<String> updLessonLsExam(@PathVariable("lessonId") @Min(1) long lessonId,
-                                                @RequestBody LessonExamination lessonExamination){
+                                                @RequestBody @NotNull LessonExamination lessonExamination){
         return new ResponseEntity(editorService.editLessonLsExam(lessonId, lessonExamination), HttpStatus.OK);
     }
 
     @PostMapping(path = "/addlsnexm/{lessonId}")
     public ResponseEntity<String> addLessonExam(@PathVariable("lessonId") @Min(1) long lessonId,
-                                                   @RequestBody LessonExamination lessonExamination){
+                                                   @RequestBody @NotNull LessonExamination lessonExamination){
         return new ResponseEntity(editorService.addLessonExaminationToLesson(lessonId, lessonExamination)
                 , HttpStatus.OK);
     }
 
     @PostMapping(path = "/addlsnhmwrk/{lessonId}")
     public ResponseEntity<String> addLessonHomework(@PathVariable("lessonId") @Min(1) long lessonId,
-                                                    @RequestBody Homework homework){
+                                                    @RequestBody @NotNull Homework homework){
         return new ResponseEntity(editorService.addHomeworkToLesson(lessonId, homework)
                 , HttpStatus.OK);
     }
@@ -79,7 +79,7 @@ public class EditorController {
     }
 
     @PostMapping(path = "/matchLsn&Crs")
-    public ResponseEntity<String> updLessonLsExam( @RequestParam long idlsn, @RequestParam long idcrs){
+    public ResponseEntity<String> updLessonLsExam( @RequestParam @Min(1) long idlsn, @RequestParam @Min(1) long idcrs){
         return new ResponseEntity(editorService.matchLessonAndCourse(idlsn, idcrs), HttpStatus.OK);
     }
 

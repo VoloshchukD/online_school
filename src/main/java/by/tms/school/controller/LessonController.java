@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @RestController
@@ -20,12 +21,12 @@ public class LessonController {
     }
 
     @PostMapping(path = "/study")
-    public ResponseEntity<String> study(@RequestParam @NotNull String courseName, @RequestParam int lessonNumber){
+    public ResponseEntity<String> study(@RequestParam @NotNull String courseName, @RequestParam @Min(0) int lessonNumber){
         return new ResponseEntity(lessonService.study(courseName,lessonNumber), HttpStatus.OK);
     }
 
     @PostMapping(path = "/passExam")
-    public ResponseEntity<String> passExam(@RequestParam @NotNull String courseName, @RequestParam int lessonNumber,
+    public ResponseEntity<String> passExam(@RequestParam @NotNull String courseName, @RequestParam @Min(0) int lessonNumber,
                                            @RequestParam int answer){
         return new ResponseEntity(lessonService.passExam(courseName, lessonNumber, answer), HttpStatus.OK);
     }

@@ -46,7 +46,7 @@ public class AdminController {
     }
 
     @PostMapping(path = "/addedtr")
-    public ResponseEntity<String> addEditor(@RequestParam long id){
+    public ResponseEntity<String> addEditor(@RequestParam @Min(1) long id){
         return new ResponseEntity(adminService.makeUserAnEditor(id), HttpStatus.OK);
     }
 
